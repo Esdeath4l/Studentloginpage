@@ -119,11 +119,17 @@ export const StudentEnrollmentForm: React.FC = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch(
-        `/api/students/${encodeURIComponent(rollNo)}`,
-        {
-          signal: abortControllerRef.current.signal,
-        },
+      const url = `/api/students/${encodeURIComponent(rollNo)}`;
+      console.log("Making GET request to:", url);
+
+      const response = await fetch(url, {
+        signal: abortControllerRef.current.signal,
+      });
+
+      console.log(
+        "GET response received:",
+        response.status,
+        response.statusText,
       );
 
       // Check if response is ok before trying to parse JSON
