@@ -19,6 +19,7 @@ class JsonPowerDBService {
     this.dbName = "SCHOOL-DB";
     this.relationName = "STUDENT-TABLE";
     this.baseUrl = "api.login2explore.com";
+    this.port = 5577;
   }
 
   private inMemoryFallback: Map<string, Student> = new Map();
