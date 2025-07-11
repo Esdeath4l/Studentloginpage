@@ -79,3 +79,24 @@ class StudentDatabase {
 
 // Export a singleton instance
 export const studentDb = new StudentDatabase();
+
+// Initialize with sample data for testing
+studentDb.createStudent({
+  rollNo: "101",
+  fullName: "Ananya Sharma",
+  class: "10A",
+  birthDate: "2007-09-15",
+  address: "Pune, MH",
+});
+
+// Set the enrollment date to match the provided data
+const student101 = studentDb.getStudent("101");
+if (student101) {
+  studentDb.updateStudent("101", {
+    fullName: "Ananya Sharma",
+    class: "10A",
+    birthDate: "2007-09-15",
+    address: "Pune, MH",
+    enrollmentDate: "2024-06-01",
+  });
+}
