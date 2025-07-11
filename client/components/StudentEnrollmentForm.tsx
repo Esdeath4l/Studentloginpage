@@ -170,6 +170,9 @@ export const StudentEnrollmentForm: React.FC = () => {
         toast.success("Student record loaded for editing");
       } else {
         // Student doesn't exist - enable creation mode
+        console.log(
+          "API returned success but no student data, enabling new student mode",
+        );
         setMode("new");
         setRollNoDisabled(false);
         setFieldsDisabled(false);
