@@ -226,7 +226,7 @@ export const updateStudent: RequestHandler = async (req, res) => {
 /**
  * DELETE /api/students/:rollNo - Delete a student
  */
-export const deleteStudent: RequestHandler = (req, res) => {
+export const deleteStudent: RequestHandler = async (req, res) => {
   try {
     const { rollNo } = req.params;
 
@@ -238,12 +238,12 @@ export const deleteStudent: RequestHandler = (req, res) => {
       return res.status(400).json(response);
     }
 
-    const deleted = studentDb.deleteStudent(rollNo);
+    const deleted = await jsonPowerDb.deleteStudent(rollNo);
 
     if (!deleted) {
       const response: StudentResponse = {
         success: false,
-        message: "Student not found",
+        message: "Student not found or failed to delete",
       };
       return res.status(404).json(response);
     }
