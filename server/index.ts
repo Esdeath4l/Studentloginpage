@@ -8,6 +8,7 @@ import {
   updateStudent,
   deleteStudent,
 } from "./routes/students";
+import { initializeSampleData } from "./services/jsonPowerDb";
 
 export function createServer() {
   const app = express();
