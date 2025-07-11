@@ -75,7 +75,7 @@ export const getAllStudents: RequestHandler = async (req, res) => {
 /**
  * POST /api/students - Create a new student
  */
-export const createStudent: RequestHandler = (req, res) => {
+export const createStudent: RequestHandler = async (req, res) => {
   try {
     const { student } = req.body as CreateStudentRequest;
 
@@ -110,7 +110,7 @@ export const createStudent: RequestHandler = (req, res) => {
     }
 
     // Check if student already exists
-    if (studentDb.studentExists(student.rollNo)) {
+    if (await jsonPowerDb.studentExists(student.rollNo)) {
       const response: StudentResponse = {
         success: false,
         message: "Student with this roll number already exists",
@@ -118,7 +118,15 @@ export const createStudent: RequestHandler = (req, res) => {
       return res.status(409).json(response);
     }
 
-    const newStudent = studentDb.createStudent(student);
+    const newStudent = await jsonPowerDb.createStudent(student);
+
+    if (!newStudent) {
+      const response: StudentResponse = {
+        success: false,
+        message: "Failed to create student in database",
+      };
+      return res.status(500).json(response);
+    }
 
     const response: StudentResponse = {
       success: true,
