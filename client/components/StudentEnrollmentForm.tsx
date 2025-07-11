@@ -59,6 +59,18 @@ export const StudentEnrollmentForm: React.FC = () => {
     resetForm();
   }, []);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const resetForm = () => {
     // Cancel any pending requests
     if (abortControllerRef.current) {
