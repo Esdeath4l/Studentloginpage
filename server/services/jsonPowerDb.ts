@@ -231,7 +231,8 @@ class JsonPowerDBService {
       if (
         response &&
         response.message &&
-        response.message.includes("success")
+        (response.message.includes("success") ||
+          response.message.includes("DATA INSERTED"))
       ) {
         // Also store in fallback
         this.inMemoryFallback.set(student.rollNo, newStudent);
