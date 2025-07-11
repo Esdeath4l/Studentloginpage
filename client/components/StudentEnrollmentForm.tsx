@@ -333,6 +333,10 @@ export const StudentEnrollmentForm: React.FC = () => {
 
       let result: StudentResponse;
       try {
+        // Ensure the response body exists and is readable
+        if (!response.body || response.bodyUsed) {
+          throw new Error("Response body is not available or already consumed");
+        }
         result = await response.json();
       } catch (parseError) {
         console.error("Error parsing response JSON:", parseError);
