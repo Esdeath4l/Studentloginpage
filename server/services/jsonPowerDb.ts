@@ -37,7 +37,7 @@ class JsonPowerDBService {
 
       const options = {
         hostname: this.baseUrl,
-        port: 443,
+        port: this.port,
         path: endpoint,
         method: "POST",
         headers: {
@@ -47,7 +47,7 @@ class JsonPowerDBService {
         },
       };
 
-      const req = https.request(options, (res) => {
+      const req = http.request(options, (res) => {
         let responseData = "";
 
         res.on("data", (chunk) => {
