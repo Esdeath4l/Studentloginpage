@@ -295,6 +295,10 @@ export const StudentEnrollmentForm: React.FC = () => {
         },
       );
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const result: StudentResponse = await response.json();
 
       if (result.success) {
