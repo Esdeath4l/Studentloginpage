@@ -6,7 +6,7 @@ import {
   CreateStudentRequest,
   UpdateStudentRequest,
 } from "@shared/api";
-import { studentDb } from "../services/studentDb";
+import { jsonPowerDb } from "../services/jsonPowerDb";
 
 /**
  * GET /api/students/:rollNo - Get a student by roll number
