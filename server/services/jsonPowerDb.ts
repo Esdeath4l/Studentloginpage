@@ -51,21 +51,30 @@ class JsonPowerDBService {
 
         res.on("end", () => {
           try {
+            console.log(`JsonPowerDB Response Status: ${res.statusCode}`);
+            console.log(`JsonPowerDB Response Headers:`, res.headers);
+            console.log(
+              `JsonPowerDB Response Data: ${responseData.substring(0, 500)}...`,
+            );
+
             // Check if response is HTML error page (404, etc.)
             if (responseData.includes("<!DOCTYPE HTML")) {
               console.warn(
-                `JsonPowerDB API returned error, falling back to in-memory storage`,
+                `JsonPowerDB API returned HTML error page, falling back to in-memory storage`,
               );
+              console.warn(`Full HTML response: ${responseData}`);
               resolve({ fallback: true });
               return;
             }
 
             const parsedResponse = JSON.parse(responseData);
+            console.log(`JsonPowerDB Parsed Response:`, parsedResponse);
             resolve(parsedResponse);
           } catch (error) {
             console.warn(
-              `JsonPowerDB parse error, falling back to in-memory storage`,
+              `JsonPowerDB parse error: ${error}, falling back to in-memory storage`,
             );
+            console.warn(`Raw response data: ${responseData}`);
             resolve({ fallback: true });
           }
         });
