@@ -24,5 +24,12 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Student API routes
+  app.get("/api/students", getAllStudents);
+  app.get("/api/students/:rollNo", getStudent);
+  app.post("/api/students", createStudent);
+  app.put("/api/students/:rollNo", updateStudent);
+  app.delete("/api/students/:rollNo", deleteStudent);
+
   return app;
 }
