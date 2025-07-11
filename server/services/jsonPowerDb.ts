@@ -372,9 +372,9 @@ export const jsonPowerDb = new JsonPowerDBService();
 export const initializeSampleData = async () => {
   try {
     // Check if student 101 already exists
-    const existingStudent = await jsonPowerDb.getStudent("101");
+    const existingStudent101 = await jsonPowerDb.getStudent("101");
 
-    if (!existingStudent) {
+    if (!existingStudent101) {
       // Create the sample student record
       await jsonPowerDb.createStudent({
         rollNo: "101",
@@ -393,8 +393,35 @@ export const initializeSampleData = async () => {
         enrollmentDate: "2024-06-01",
       });
 
-      console.log("Sample student data initialized in JsonPowerDB");
+      console.log("Student 101 initialized in JsonPowerDB");
     }
+
+    // Check if student 102 already exists
+    const existingStudent102 = await jsonPowerDb.getStudent("102");
+
+    if (!existingStudent102) {
+      // Create student record 102
+      await jsonPowerDb.createStudent({
+        rollNo: "102",
+        fullName: "Ananya Sharma",
+        class: "10A",
+        birthDate: "2007-09-15",
+        address: "Pune, MH",
+      });
+
+      // Update with the specific enrollment date
+      await jsonPowerDb.updateStudent("102", {
+        fullName: "Ananya Sharma",
+        class: "10A",
+        birthDate: "2007-09-15",
+        address: "Pune, MH",
+        enrollmentDate: "2024-06-01",
+      });
+
+      console.log("Student 102 initialized in JsonPowerDB");
+    }
+
+    console.log("Sample student data initialization completed");
   } catch (error) {
     console.error("Error initializing sample data:", error);
   }
