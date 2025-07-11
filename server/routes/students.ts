@@ -139,6 +139,10 @@ export const createStudent: RequestHandler = async (req, res) => {
     res.status(201).json(response);
   } catch (error) {
     console.error("Error creating student:", error);
+    console.error(
+      "Error stack:",
+      error instanceof Error ? error.stack : "No stack trace",
+    );
     const response: StudentResponse = {
       success: false,
       message: "Internal server error",
