@@ -261,13 +261,44 @@ class JsonPowerDBService {
     updates: Omit<Student, "rollNo">,
   ): Promise<Student | null> {
     try {
+      // First, get the existing student to find the record number
+      const existingStudent = await this.getStudent(rollNo);
+      if (!existingStudent) {
+        return null;
+      }
+
+      // Get the record number from the student data
+      const getPayload = {
+        token: this.connectionToken,
+        cmd: "GET_BY_KEY",
+        dbName: this.dbName,
+        rel: this.relationName,
+        jsonStr: {
+          "Roll-No": rollNo,
+        },
+      };
+
+      const getResponse = await this.makeRequest("/api/irl", getPayload);
+
+      if (!getResponse || !getResponse.data) {
+        return null;
+      }
+
+      const parsedData = JSON.parse(getResponse.data);
+      const recNo = parsedData.rec_no;
+
+      if (!recNo) {
+        return null;
+      }
+
+      // Now use the record number for the update
       const payload = {
         token: this.connectionToken,
         cmd: "UPDATE",
         dbName: this.dbName,
         rel: this.relationName,
         jsonStr: {
-          [rollNo]: {
+          [recNo]: {
             "Full-Name": updates.fullName,
             Class: updates.class,
             "Birth-Date": updates.birthDate,
