@@ -78,6 +78,7 @@ export const getAllStudents: RequestHandler = async (req, res) => {
  */
 export const createStudent: RequestHandler = async (req, res) => {
   try {
+    console.log("CREATE request received:", req.method, req.path, req.body);
     const { student } = req.body as CreateStudentRequest;
 
     if (!student) {
