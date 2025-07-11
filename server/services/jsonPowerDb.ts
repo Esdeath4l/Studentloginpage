@@ -30,6 +30,9 @@ class JsonPowerDBService {
     return new Promise((resolve, reject) => {
       const data = JSON.stringify(payload);
 
+      console.log(`JsonPowerDB Request to: https://${this.baseUrl}${endpoint}`);
+      console.log(`JsonPowerDB Request Payload:`, payload);
+
       const options = {
         hostname: this.baseUrl,
         port: 443,
