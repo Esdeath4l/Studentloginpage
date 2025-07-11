@@ -508,18 +508,6 @@ export const StudentEnrollmentForm: React.FC = () => {
                   {mode === "new" ? "New Enrollment" : "Edit Student"}
                 </span>
               </p>
-              {/* Debug Info */}
-              <div className="text-xs text-muted-foreground mt-2 font-mono">
-                <div>
-                  Save: {buttonsState.save ? "✓" : "✗"} | Update:{" "}
-                  {buttonsState.update ? "✓" : "✗"} | Reset:{" "}
-                  {buttonsState.reset ? "✓" : "✗"}
-                </div>
-                <div>
-                  Fields Disabled: {fieldsDisabled ? "Yes" : "No"} | Loading:{" "}
-                  {isLoading ? "Yes" : "No"}
-                </div>
-              </div>
             </div>
           </CardContent>
         </Card>
