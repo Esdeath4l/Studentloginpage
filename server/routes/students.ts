@@ -13,6 +13,7 @@ import { jsonPowerDb } from "../services/jsonPowerDb";
  */
 export const getStudent: RequestHandler = async (req, res) => {
   try {
+    console.log("GET request received:", req.method, req.path, req.params);
     const { rollNo } = req.params;
 
     if (!rollNo) {
