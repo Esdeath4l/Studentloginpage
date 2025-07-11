@@ -11,7 +11,7 @@ import { jsonPowerDb } from "../services/jsonPowerDb";
 /**
  * GET /api/students/:rollNo - Get a student by roll number
  */
-export const getStudent: RequestHandler = (req, res) => {
+export const getStudent: RequestHandler = async (req, res) => {
   try {
     const { rollNo } = req.params;
 
