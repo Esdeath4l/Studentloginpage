@@ -275,6 +275,7 @@ export const StudentEnrollmentForm: React.FC = () => {
 
   const handleUpdate = async () => {
     if (!validateForm()) return;
+    if (isLoading) return; // Prevent multiple simultaneous operations
 
     try {
       setIsLoading(true);
