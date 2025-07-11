@@ -23,7 +23,7 @@ export const getStudent: RequestHandler = (req, res) => {
       return res.status(400).json(response);
     }
 
-    const student = studentDb.getStudent(rollNo);
+    const student = await jsonPowerDb.getStudent(rollNo);
 
     if (!student) {
       const response: StudentResponse = {
