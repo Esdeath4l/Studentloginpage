@@ -188,21 +188,38 @@ class JsonPowerDBService {
 
       const response = await this.makeRequest("/api/iml", payload);
 
+      const newStudent = {
+        ...student,
+        enrollmentDate,
+      };
+
+      // Use fallback if JsonPowerDB is not available
+      if (response && response.fallback) {
+        this.inMemoryFallback.set(student.rollNo, newStudent);
+        return newStudent;
+      }
+
       if (
         response &&
         response.message &&
         response.message.includes("success")
       ) {
-        return {
-          ...student,
-          enrollmentDate,
-        };
+        // Also store in fallback
+        this.inMemoryFallback.set(student.rollNo, newStudent);
+        return newStudent;
       }
 
       return null;
     } catch (error) {
       console.error("Error creating student:", error);
-      return null;
+      // Fallback to in-memory storage
+      const enrollmentDate = new Date().toISOString().split("T")[0];
+      const newStudent = {
+        ...student,
+        enrollmentDate,
+      };
+      this.inMemoryFallback.set(student.rollNo, newStudent);
+      return newStudent;
     }
   }
 
