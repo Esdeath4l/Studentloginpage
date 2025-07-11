@@ -32,5 +32,8 @@ export function createServer() {
   app.put("/api/students/:rollNo", updateStudent);
   app.delete("/api/students/:rollNo", deleteStudent);
 
+  // Initialize sample data
+  initializeSampleData();
+
   return app;
 }
