@@ -1,6 +1,13 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import {
+  getStudent,
+  getAllStudents,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+} from "./routes/students";
 
 export function createServer() {
   const app = express();
