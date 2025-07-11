@@ -52,9 +52,9 @@ export const getStudent: RequestHandler = (req, res) => {
 /**
  * GET /api/students - Get all students
  */
-export const getAllStudents: RequestHandler = (req, res) => {
+export const getAllStudents: RequestHandler = async (req, res) => {
   try {
-    const students = studentDb.getAllStudents();
+    const students = await jsonPowerDb.getAllStudents();
 
     const response: StudentsListResponse = {
       success: true,
