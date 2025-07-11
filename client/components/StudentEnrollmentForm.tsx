@@ -205,7 +205,7 @@ export const StudentEnrollmentForm: React.FC = () => {
 
   const handleRollNoChange = useCallback(
     (value: string) => {
-      setFormData((prev) => ({ ...prev, rollNo: value }));
+      setFormData((prev) => ({ ...prev, rollNo: value || "" }));
 
       // Clear any existing timeout
       if (debounceTimeoutRef.current) {
