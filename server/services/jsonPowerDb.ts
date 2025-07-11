@@ -168,12 +168,12 @@ class JsonPowerDBService {
       if (response && response.data) {
         const studentsData = JSON.parse(response.data);
         const students = Object.values(studentsData).map((student: any) => ({
-          rollNo: student["Roll-No"],
-          fullName: student["Full-Name"],
-          class: student["Class"],
-          birthDate: student["Birth-Date"],
-          address: student["Address"],
-          enrollmentDate: student["Enrollment-Date"],
+          rollNo: student["Roll-No"] || "",
+          fullName: student["Full-Name"] || "",
+          class: student["Class"] || "",
+          birthDate: student["Birth-Date"] || "",
+          address: student["Address"] || "",
+          enrollmentDate: student["Enrollment-Date"] || "",
         }));
 
         // Sync with fallback
