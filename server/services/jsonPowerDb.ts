@@ -123,14 +123,15 @@ class JsonPowerDBService {
       }
 
       if (response && response.data) {
-        const studentData = JSON.parse(response.data);
+        const parsedData = JSON.parse(response.data);
+        const studentData = parsedData.record || parsedData;
         const student = {
-          rollNo: studentData["Roll-No"],
-          fullName: studentData["Full-Name"],
-          class: studentData["Class"],
-          birthDate: studentData["Birth-Date"],
-          address: studentData["Address"],
-          enrollmentDate: studentData["Enrollment-Date"],
+          rollNo: studentData["Roll-No"] || "",
+          fullName: studentData["Full-Name"] || "",
+          class: studentData["Class"] || "",
+          birthDate: studentData["Birth-Date"] || "",
+          address: studentData["Address"] || "",
+          enrollmentDate: studentData["Enrollment-Date"] || "",
         };
 
         // Also store in fallback
