@@ -254,14 +254,19 @@ export const StudentEnrollmentForm: React.FC = () => {
         body: JSON.stringify(requestData),
       });
 
+      let result: StudentResponse;
+
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          `HTTP error! status: ${response.status}, response: ${errorText}`,
-        );
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+          const errorText = await response.text();
+          errorMessage += `, response: ${errorText}`;
+        } catch (readError) {
+          errorMessage += `, could not read response body`;
+        }
+        throw new Error(errorMessage);
       }
 
-      let result: StudentResponse;
       try {
         result = await response.json();
       } catch (parseError) {
