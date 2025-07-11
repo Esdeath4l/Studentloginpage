@@ -148,7 +148,7 @@ export const createStudent: RequestHandler = async (req, res) => {
 /**
  * PUT /api/students/:rollNo - Update a student
  */
-export const updateStudent: RequestHandler = (req, res) => {
+export const updateStudent: RequestHandler = async (req, res) => {
   try {
     const { rollNo } = req.params;
     const { student: studentUpdates } = req.body as UpdateStudentRequest;
@@ -193,12 +193,15 @@ export const updateStudent: RequestHandler = (req, res) => {
       return res.status(400).json(response);
     }
 
-    const updatedStudent = studentDb.updateStudent(rollNo, studentUpdates);
+    const updatedStudent = await jsonPowerDb.updateStudent(
+      rollNo,
+      studentUpdates,
+    );
 
     if (!updatedStudent) {
       const response: StudentResponse = {
         success: false,
-        message: "Student not found",
+        message: "Student not found or failed to update",
       };
       return res.status(404).json(response);
     }
