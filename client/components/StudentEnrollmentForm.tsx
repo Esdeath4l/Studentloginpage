@@ -302,10 +302,19 @@ export const StudentEnrollmentForm: React.FC = () => {
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! status: ${response.status}, response: ${errorText}`,
+        );
       }
 
-      const result: StudentResponse = await response.json();
+      let result: StudentResponse;
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        console.error("Error parsing response JSON:", parseError);
+        throw new Error("Invalid response format from server");
+      }
 
       if (result.success) {
         toast.success("Student record updated successfully!");
