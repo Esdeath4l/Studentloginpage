@@ -60,11 +60,20 @@ export const StudentEnrollmentForm: React.FC = () => {
   }, []);
 
   const resetForm = () => {
+    // Cancel any pending requests
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
     setFormData(initialFormState);
     setMode("new");
     setRollNoDisabled(false);
     setFieldsDisabled(true);
     setButtonsState({ save: false, update: false, reset: true });
+    setIsLoading(false);
     setTimeout(() => {
       rollNoRef.current?.focus();
     }, 0);
