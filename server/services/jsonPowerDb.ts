@@ -249,21 +249,37 @@ class JsonPowerDBService {
 
       const response = await this.makeRequest("/api/iml", payload);
 
+      const updatedStudent = {
+        rollNo,
+        ...updates,
+      };
+
+      // Use fallback if JsonPowerDB is not available
+      if (response && response.fallback) {
+        this.inMemoryFallback.set(rollNo, updatedStudent);
+        return updatedStudent;
+      }
+
       if (
         response &&
         response.message &&
         response.message.includes("success")
       ) {
-        return {
-          rollNo,
-          ...updates,
-        };
+        // Also store in fallback
+        this.inMemoryFallback.set(rollNo, updatedStudent);
+        return updatedStudent;
       }
 
       return null;
     } catch (error) {
       console.error("Error updating student:", error);
-      return null;
+      // Fallback to in-memory storage
+      const updatedStudent = {
+        rollNo,
+        ...updates,
+      };
+      this.inMemoryFallback.set(rollNo, updatedStudent);
+      return updatedStudent;
     }
   }
 
