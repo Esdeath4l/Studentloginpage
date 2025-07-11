@@ -130,6 +130,7 @@ export const StudentEnrollmentForm: React.FC = () => {
       if (!response.ok) {
         if (response.status === 404) {
           // Student doesn't exist - enable creation mode
+          console.log("Student not found, enabling new student mode");
           setMode("new");
           setRollNoDisabled(false);
           setFieldsDisabled(false);
