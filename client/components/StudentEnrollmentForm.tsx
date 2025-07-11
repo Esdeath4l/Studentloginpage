@@ -87,22 +87,43 @@ export const StudentEnrollmentForm: React.FC = () => {
     return true;
   };
 
-  const handleRollNoChange = async (value: string) => {
-    setFormData((prev) => ({ ...prev, rollNo: value }));
-
-    if (!value.trim()) {
-      setMode("new");
-      setFieldsDisabled(true);
-      setButtonsState({ save: false, update: false, reset: true });
-      return;
+  const checkStudentExists = useCallback(async (rollNo: string) => {
+    // Cancel any existing request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
 
-    // Check if student exists
+    // Create new abort controller for this request
+    abortControllerRef.current = new AbortController();
+
     try {
       setIsLoading(true);
       const response = await fetch(
-        `/api/students/${encodeURIComponent(value)}`,
+        `/api/students/${encodeURIComponent(rollNo)}`,
+        {
+          signal: abortControllerRef.current.signal,
+        },
       );
+
+      // Check if response is ok before trying to parse JSON
+      if (!response.ok) {
+        if (response.status === 404) {
+          // Student doesn't exist - enable creation mode
+          setMode("new");
+          setRollNoDisabled(false);
+          setFieldsDisabled(false);
+          setButtonsState({ save: true, update: false, reset: true });
+
+          setTimeout(() => {
+            fullNameRef.current?.focus();
+          }, 0);
+
+          toast.info("New student - ready for enrollment");
+          return;
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const result: StudentResponse = await response.json();
 
       if (result.success && result.student) {
@@ -139,15 +160,48 @@ export const StudentEnrollmentForm: React.FC = () => {
         toast.info("New student - ready for enrollment");
       }
     } catch (error) {
-      console.error("Error checking student:", error);
-      toast.error("Error checking student record");
-      setMode("new");
-      setFieldsDisabled(false);
-      setButtonsState({ save: true, update: false, reset: true });
+      // Only show error if it wasn't an abort
+      if (error instanceof Error && error.name !== "AbortError") {
+        console.error("Error checking student:", error);
+        toast.error("Error checking student record");
+        setMode("new");
+        setFieldsDisabled(false);
+        setButtonsState({ save: true, update: false, reset: true });
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  const handleRollNoChange = useCallback(
+    (value: string) => {
+      setFormData((prev) => ({ ...prev, rollNo: value }));
+
+      // Clear any existing timeout
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+
+      // Cancel any existing request
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      if (!value.trim()) {
+        setMode("new");
+        setFieldsDisabled(true);
+        setButtonsState({ save: false, update: false, reset: true });
+        setIsLoading(false);
+        return;
+      }
+
+      // Debounce the API call to prevent multiple requests
+      debounceTimeoutRef.current = setTimeout(() => {
+        checkStudentExists(value.trim());
+      }, 300); // 300ms debounce
+    },
+    [checkStudentExists],
+  );
 
   const handleSave = async () => {
     if (!validateForm()) return;
