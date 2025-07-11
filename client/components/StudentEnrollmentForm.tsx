@@ -314,7 +314,7 @@ export const StudentEnrollmentForm: React.FC = () => {
   };
 
   const handleInputChange = (field: keyof FormState, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value || "" }));
   };
 
   return (
