@@ -321,26 +321,12 @@ export const StudentEnrollmentForm: React.FC = () => {
         },
       );
 
-      // Clone the response to safely read it multiple times if needed
-      const responseClone = response.clone();
-
       if (!response.ok) {
-        let errorMessage = `HTTP error! status: ${response.status}`;
-        try {
-          const errorText = await responseClone.text();
-          errorMessage += `, response: ${errorText}`;
-        } catch (readError) {
-          errorMessage += `, could not read response body`;
-        }
-        throw new Error(errorMessage);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       let result: StudentResponse;
       try {
-        // Ensure the response body exists and is readable
-        if (!response.body || response.bodyUsed) {
-          throw new Error("Response body is not available or already consumed");
-        }
         result = await response.json();
       } catch (parseError) {
         console.error("Error parsing response JSON:", parseError);
