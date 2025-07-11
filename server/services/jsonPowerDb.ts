@@ -266,3 +266,35 @@ class JsonPowerDBService {
 
 // Export a singleton instance
 export const jsonPowerDb = new JsonPowerDBService();
+
+// Initialize with sample data if needed
+export const initializeSampleData = async () => {
+  try {
+    // Check if student 101 already exists
+    const existingStudent = await jsonPowerDb.getStudent("101");
+
+    if (!existingStudent) {
+      // Create the sample student record
+      await jsonPowerDb.createStudent({
+        rollNo: "101",
+        fullName: "Ananya Sharma",
+        class: "10A",
+        birthDate: "2007-09-15",
+        address: "Pune, MH",
+      });
+
+      // Update with the specific enrollment date
+      await jsonPowerDb.updateStudent("101", {
+        fullName: "Ananya Sharma",
+        class: "10A",
+        birthDate: "2007-09-15",
+        address: "Pune, MH",
+        enrollmentDate: "2024-06-01",
+      });
+
+      console.log("Sample student data initialized in JsonPowerDB");
+    }
+  } catch (error) {
+    console.error("Error initializing sample data:", error);
+  }
+};
