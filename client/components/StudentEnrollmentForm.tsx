@@ -190,8 +190,13 @@ export const StudentEnrollmentForm: React.FC = () => {
         console.error("Error checking student:", error);
         toast.error("Error checking student record");
         setMode("new");
+        setRollNoDisabled(false);
         setFieldsDisabled(false);
         setButtonsState({ save: true, update: false, reset: true });
+
+        setTimeout(() => {
+          fullNameRef.current?.focus();
+        }, 0);
       }
     } finally {
       setIsLoading(false);
