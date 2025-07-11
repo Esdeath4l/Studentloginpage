@@ -293,7 +293,8 @@ class JsonPowerDBService {
       if (
         response &&
         response.message &&
-        response.message.includes("success")
+        (response.message.includes("success") ||
+          response.message.includes("Success"))
       ) {
         // Also store in fallback
         this.inMemoryFallback.set(rollNo, updatedStudent);
