@@ -150,6 +150,13 @@ export const createStudent: RequestHandler = async (req, res) => {
  */
 export const updateStudent: RequestHandler = async (req, res) => {
   try {
+    console.log(
+      "UPDATE request received:",
+      req.method,
+      req.path,
+      req.params,
+      req.body,
+    );
     const { rollNo } = req.params;
     const { student: studentUpdates } = req.body as UpdateStudentRequest;
 
