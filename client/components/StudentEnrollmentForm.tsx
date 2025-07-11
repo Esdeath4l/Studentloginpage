@@ -315,12 +315,13 @@ export const StudentEnrollmentForm: React.FC = () => {
         },
       );
 
-      let result: StudentResponse;
+      // Clone the response to safely read it multiple times if needed
+      const responseClone = response.clone();
 
       if (!response.ok) {
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
-          const errorText = await response.text();
+          const errorText = await responseClone.text();
           errorMessage += `, response: ${errorText}`;
         } catch (readError) {
           errorMessage += `, could not read response body`;
@@ -328,6 +329,7 @@ export const StudentEnrollmentForm: React.FC = () => {
         throw new Error(errorMessage);
       }
 
+      let result: StudentResponse;
       try {
         result = await response.json();
       } catch (parseError) {
