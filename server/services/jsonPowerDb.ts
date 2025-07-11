@@ -101,9 +101,14 @@ class JsonPowerDBService {
 
       const response = await this.makeRequest("/api/irl", payload);
 
+      // Use fallback if JsonPowerDB is not available
+      if (response && response.fallback) {
+        return this.inMemoryFallback.get(rollNo) || null;
+      }
+
       if (response && response.data) {
         const studentData = JSON.parse(response.data);
-        return {
+        const student = {
           rollNo: studentData["Roll-No"],
           fullName: studentData["Full-Name"],
           class: studentData["Class"],
@@ -111,12 +116,16 @@ class JsonPowerDBService {
           address: studentData["Address"],
           enrollmentDate: studentData["Enrollment-Date"],
         };
+
+        // Also store in fallback
+        this.inMemoryFallback.set(rollNo, student);
+        return student;
       }
 
       return null;
     } catch (error) {
       console.error("Error getting student:", error);
-      return null;
+      return this.inMemoryFallback.get(rollNo) || null;
     }
   }
 
