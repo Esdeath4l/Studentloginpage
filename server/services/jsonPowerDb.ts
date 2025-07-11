@@ -335,7 +335,10 @@ class JsonPowerDBService {
       }
 
       const success =
-        response && response.message && response.message.includes("success");
+        response &&
+        response.message &&
+        (response.message.includes("success") ||
+          response.message.includes("Success"));
 
       if (success) {
         // Also remove from fallback
