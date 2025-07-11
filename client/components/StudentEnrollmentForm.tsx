@@ -233,6 +233,7 @@ export const StudentEnrollmentForm: React.FC = () => {
 
   const handleSave = async () => {
     if (!validateForm()) return;
+    if (isLoading) return; // Prevent multiple simultaneous operations
 
     try {
       setIsLoading(true);
