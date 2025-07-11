@@ -254,11 +254,22 @@ export const StudentEnrollmentForm: React.FC = () => {
         },
       };
 
+      console.log(
+        "Making CREATE request to: /api/students with data:",
+        requestData,
+      );
+
       const response = await fetch("/api/students", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData),
       });
+
+      console.log(
+        "CREATE response received:",
+        response.status,
+        response.statusText,
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
