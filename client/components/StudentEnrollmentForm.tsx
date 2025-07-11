@@ -298,13 +298,19 @@ export const StudentEnrollmentForm: React.FC = () => {
         },
       };
 
-      const response = await fetch(
-        `/api/students/${encodeURIComponent(formData.rollNo)}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(requestData),
-        },
+      const url = `/api/students/${encodeURIComponent(formData.rollNo)}`;
+      console.log("Making UPDATE request to:", url, "with data:", requestData);
+
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+      });
+
+      console.log(
+        "UPDATE response received:",
+        response.status,
+        response.statusText,
       );
 
       if (!response.ok) {
