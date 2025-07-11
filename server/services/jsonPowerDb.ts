@@ -310,12 +310,24 @@ class JsonPowerDBService {
 
       const response = await this.makeRequest("/api/iml", payload);
 
-      return (
-        response && response.message && response.message.includes("success")
-      );
+      // Use fallback if JsonPowerDB is not available
+      if (response && response.fallback) {
+        return this.inMemoryFallback.delete(rollNo);
+      }
+
+      const success =
+        response && response.message && response.message.includes("success");
+
+      if (success) {
+        // Also remove from fallback
+        this.inMemoryFallback.delete(rollNo);
+      }
+
+      return success;
     } catch (error) {
       console.error("Error deleting student:", error);
-      return false;
+      // Fallback to in-memory deletion
+      return this.inMemoryFallback.delete(rollNo);
     }
   }
 
