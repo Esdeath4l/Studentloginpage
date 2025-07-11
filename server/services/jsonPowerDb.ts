@@ -10,6 +10,7 @@ class JsonPowerDBService {
   private readonly dbName: string;
   private readonly relationName: string;
   private readonly baseUrl: string;
+  private readonly port: number;
 
   constructor() {
     // You can set your connection token here or via environment variable
