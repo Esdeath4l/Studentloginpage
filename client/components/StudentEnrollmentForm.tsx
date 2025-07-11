@@ -51,6 +51,8 @@ export const StudentEnrollmentForm: React.FC = () => {
 
   const rollNoRef = useRef<HTMLInputElement>(null);
   const fullNameRef = useRef<HTMLInputElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Focus on roll number field on component mount
   useEffect(() => {
