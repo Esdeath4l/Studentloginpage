@@ -21,8 +21,10 @@ class JsonPowerDBService {
     this.baseUrl = "api.login2explore.com";
   }
 
+  private inMemoryFallback: Map<string, Student> = new Map();
+
   /**
-   * Make HTTP request to JsonPowerDB API
+   * Make HTTP request to JsonPowerDB API with fallback to in-memory storage
    */
   private async makeRequest(endpoint: string, payload: any): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -49,16 +51,32 @@ class JsonPowerDBService {
 
         res.on("end", () => {
           try {
+            // Check if response is HTML error page (404, etc.)
+            if (responseData.includes("<!DOCTYPE HTML")) {
+              console.warn(
+                `JsonPowerDB API returned error, falling back to in-memory storage`,
+              );
+              resolve({ fallback: true });
+              return;
+            }
+
             const parsedResponse = JSON.parse(responseData);
             resolve(parsedResponse);
           } catch (error) {
-            reject(new Error(`Failed to parse response: ${responseData}`));
+            console.warn(
+              `JsonPowerDB parse error, falling back to in-memory storage`,
+            );
+            resolve({ fallback: true });
           }
         });
       });
 
       req.on("error", (error) => {
-        reject(error);
+        console.warn(
+          `JsonPowerDB connection error, falling back to in-memory storage:`,
+          error.message,
+        );
+        resolve({ fallback: true });
       });
 
       req.write(data);
