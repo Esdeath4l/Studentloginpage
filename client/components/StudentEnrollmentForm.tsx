@@ -151,12 +151,12 @@ export const StudentEnrollmentForm: React.FC = () => {
       if (result.success && result.student) {
         // Student exists - load data and switch to edit mode
         setFormData({
-          rollNo: result.student.rollNo,
-          fullName: result.student.fullName,
-          class: result.student.class,
-          birthDate: result.student.birthDate,
-          address: result.student.address,
-          enrollmentDate: result.student.enrollmentDate,
+          rollNo: result.student.rollNo || "",
+          fullName: result.student.fullName || "",
+          class: result.student.class || "",
+          birthDate: result.student.birthDate || "",
+          address: result.student.address || "",
+          enrollmentDate: result.student.enrollmentDate || "",
         });
         setMode("edit");
         setRollNoDisabled(true);
